@@ -1,0 +1,1 @@
+[![Quality Gate Status](https://sq.jonesit.us/api/project_badges/measure?project=wolfman2g1_breeze_AYRjLLvVSeVByPytZYpv&metric=alert_status&token=70f210d06aa17ee8a00b20c886cb414dd2b89981)](https://sq.jonesit.us/dashboard?id=wolfman2g1_breeze_AYRjLLvVSeVByPytZYpv)
