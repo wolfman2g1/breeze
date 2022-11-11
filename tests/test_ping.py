@@ -1,7 +1,8 @@
 from fastapi.testclient import TestClient
-from app import app
 
-client = TestClient(app)
+from app import configure_app
+
+client = TestClient(configure_app())
 
 def test_ping():
     response = client.get("/api/v1/ping")

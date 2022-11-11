@@ -22,7 +22,7 @@ LOGGING_CONFIG = {
     },
     "loggers": {
         "": {"handlers": ["all_std_out"], "level": ROOT_LOG_LEVEL,"propagate": False},
-        "uvicorn": {"handlers": ["all_std_out"], "level": ROOT_LOG_LEVEL,"propagate": False},
-        "breeze" : {"handlers": ["all_std_out"], "level": ROOT_LOG_LEVEL,"propagate": False}
+        "uvicorn": {"handlers": ["all_std_out"], "level": ROOT_LOG_LEVEL,"propagate": False}
+
     }
 }
