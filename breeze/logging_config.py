@@ -1,8 +1,8 @@
 import os
 
+LOGGER_NAME: str = "Breeze"
 LOG_LEVEL = os.getenv("LOG_LEVEL", "DEBUG")
 ROOT_LOG_LEVEL = os.getenv("ROOT_LOG_LEVEL", "INFO")
-
 LOGGING_CONFIG = {
     "version": 1,
     "formatters": {"standard": {"format": "[%(asctime)s] {%(name)s:%(lineno)d} %(levelname)s - %(message)s"}},
@@ -23,6 +23,6 @@ LOGGING_CONFIG = {
     "loggers": {
         "": {"handlers": ["all_std_out"], "level": ROOT_LOG_LEVEL,"propagate": False},
         "uvicorn": {"handlers": ["all_std_out"], "level": ROOT_LOG_LEVEL,"propagate": False},
-        "ie_oob_summary_service" : {"handlers": ["all_std_out"], "level": ROOT_LOG_LEVEL,"propagate": False}
+        "breeze" : {"handlers": ["all_std_out"], "level": ROOT_LOG_LEVEL,"propagate": False}
     }
 }
