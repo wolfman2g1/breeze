@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
+from ..app import app
 
-app = FastAPI()
 client = TestClient(app)
 
 def test_ping():
