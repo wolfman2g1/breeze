@@ -14,7 +14,7 @@ class Customer(Base):
     state = Column(String(50))
     postal = Column(String(10))
     created = Column(TIMESTAMP, nullable=False, server_default=text("CURRENT_TIMESTAMP") )
-    contacts = relationship('Contacts', back_populates='customers')
+    contacts = relationship('Contacts')
 
 class Contacts(Base):
      __tablename__ = "contacts"
@@ -24,6 +24,5 @@ class Contacts(Base):
      email = Column(String)
      password = Column(String, nullable=False)
      customer_id = Column(UUID, ForeignKey("customers.id"))
-     customer = relationship('Customer', back_populates='contacts')
 
 

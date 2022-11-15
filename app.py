@@ -5,7 +5,10 @@ import logging.config
 from  breeze_service.logging_config import LOGGING_CONFIG
 from fastapi.middleware.cors import CORSMiddleware
 from  breeze_service.settings import config
-from breeze_service.api import ping
+from breeze_service.api import ping, customer
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
 "Log setup"
 logging.config.dictConfig(LOGGING_CONFIG)
@@ -23,6 +26,8 @@ def configure_app():
         allow_headers=["*"]
     )
     app.include_router(ping.router)
+    app.include_router(customer.router)
+
     return app
 
 

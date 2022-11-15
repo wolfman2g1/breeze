@@ -8,4 +8,4 @@ router = APIRouter(prefix="/api/v1")
 @router.get("/ping")
 def pong():
     """ This endpoint will return a JSON object to test that the app is working"""
-    return {"message": "PONG!"}
+    return {"ping": "PONG!"}

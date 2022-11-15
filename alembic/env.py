@@ -14,14 +14,8 @@ from breeze_service.models import Base
 # access to the values within the .ini file in use.
 config = context.config
 
-""" import from settings"""
-db_host=get_config().DB_HOST
-db_user=get_config().DB_USER
-db_pass=get_config().DB_PASS.get_secret_value()
-db_name=get_config().DB_NAME
-db_port=get_config().DB_PORT
-
-config.set_main_option("sqlalchemy.url", f"postgresql+psycopg2://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}")
+from  breeze_service.settings import config as conf
+config.set_main_option("sqlalchemy.url", f"postgresql+psycopg2://{conf.DB_USER}:{conf.DB_PASS.get_secret_value()}@{conf.DB_HOST}:{conf.DB_PORT}/{conf.DB_NAME}")
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
