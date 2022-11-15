@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     DB_USER: str
     DB_PASS: SecretStr
     DB_NAME: str
-    DB_PORT: str
+    DB_PORT: Optional[str] = 5432
     TESTING: Optional[bool] = False
 
 @lru_cache

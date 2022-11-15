@@ -7,8 +7,7 @@ from alembic import context
 
 
 from breeze_service.settings import get_config
-import models
-from models import Base
+from breeze_service.models import Base
 
 
 # this is the Alembic Config object, which provides
@@ -18,7 +17,7 @@ config = context.config
 """ import from settings"""
 db_host=get_config().DB_HOST
 db_user=get_config().DB_USER
-db_pass=get_config().DB_PASS
+db_pass=get_config().DB_PASS.get_secret_value()
 db_name=get_config().DB_NAME
 db_port=get_config().DB_PORT
 
@@ -31,7 +30,7 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-# from myapp import mymodel
+from breeze_service.models import Base
 # target_metadata = mymodel.Base.metadata
 target_metadata = [Base.metadata]
 
