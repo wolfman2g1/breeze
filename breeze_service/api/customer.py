@@ -12,7 +12,7 @@ router = APIRouter(prefix="/api/v1")
 def list_company(company: Company):
     """ Returns a list of all customers """
     logger.info()
-    customer = Customer.
+    customer = Customer.query
 
 
 
