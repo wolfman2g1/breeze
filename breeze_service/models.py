@@ -14,21 +14,27 @@ class Customer(Base):
     state = Column(String(50))
     postal = Column(String(10))
     created = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("CURRENT_TIMESTAMP") )
-    contacts = relationship('Contacts')
-    tickets = relationship('Tickets')
-    user = relationship("Users")
+    contacts = relationship('Contacts',  cascade="all, delete-orphan")
+    tickets = relationship('Tickets',  cascade="all, delete-orphan")
+
+    def __str__(self):
+        return self.customer_name, self.id
 
 class Contacts(Base):
      __tablename__ = "contacts"
      id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
      fname = Column(String(50))
      lname = Column(String(50))
-     email = Column(String(50))
+     email = Column(String(50), unique=True)
      phone = Column(String(11))
      password = Column(String,nullable=False)
      created = Column(TIMESTAMP(timezone=True), nullable=False,server_default=text("CURRENT_TIMESTAMP"))
-     customer_id = Column(UUID, ForeignKey("customers.id"))
-     tickets = relationship("Tickets")
+     customer_id = Column(UUID(as_uuid=True), ForeignKey("customers.id"))
+     customer = relationship("Customer", back_populates="contacts")
+     tickets = relationship("Tickets",  cascade="all, delete-orphan")
+
+     def __str__(self) -> str:
+         return self.fname, self.lname, self.customer_id
 
 class Notes(Base):
     __tablename__ = "notes"
@@ -36,7 +42,10 @@ class Notes(Base):
     public = Column(Boolean, nullable=True)
     note = Column(Text)
     entered_at =  Column(TIMESTAMP(timezone=True), nullable=False,server_default=text("CURRENT_TIMESTAMP"))
-    ticket_id = Column(UUID, ForeignKey("tickets.id"))
+    ticket_id = Column(UUID, ForeignKey("tickets.id",ondelete="CASCADE"))
+
+    def __str__(self) -> str:
+        return self.note
 
 
 class Tickets(Base):
@@ -48,10 +57,13 @@ class Tickets(Base):
     status = Column(String(50), unique=True, nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False,server_default=text("CURRENT_TIMESTAMP"))
     updated_at =Column(TIMESTAMP(timezone=True), nullable=True,server_default=text("CURRENT_TIMESTAMP"))
-    user_id = Column(UUID, ForeignKey("contacts.id"))
-    tech_id = Column(UUID, ForeignKey("techs.id"))
-    customer_id = Column(UUID, ForeignKey("customers.id"))
-    notes = relationship("Notes")
+    user_id = Column(UUID, ForeignKey("contacts.id",ondelete="CASCADE"))
+    tech_id = Column(UUID, ForeignKey("techs.id",ondelete="CASCADE"))
+    customer_id = Column(UUID, ForeignKey("customers.id",ondelete="CASCADE"))
+    notes = relationship("Notes",  cascade="all, delete-orphan")
+
+    def __str__(self) -> str:
+        return self.ticket_id
 
 class Techs(Base):
     __tablename__ = "techs"
@@ -62,7 +74,10 @@ class Techs(Base):
     password = Column(String,nullable=False)
     admin = Column(Boolean, nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False,server_default=text("CURRENT_TIMESTAMP"))
-    tickets = relationship('Tickets')
+    tickets = relationship('Tickets',  cascade="all, delete-orphan")
+
+    def __str__(self) -> str:
+        return self.fname, self.lname
 
 
 
