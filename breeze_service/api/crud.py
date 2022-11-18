@@ -6,16 +6,17 @@ from breeze_service.api import schema
 
 
 ### Customer Crud ###
-def get_customers_inner(db: Session, limit: int = 10, search: Optional[str] = ""):
-    return db.query(models.Customer).filter(models.Customer.customer_name.constraints(search).limit(limit).all())
+def get_customers_inner(db: Session, limit: int = 10, search: Optional[str] = "", skip: int = 0):
+    return db.query(models.Customer).filter(models.Customer.customer_name.contains(search)).limit(limit).offset(skip).all()
 
 
 def get_customer_by_id_inner(id: uuid.UUID, db: Session):
     return db.query(models.Customer).filter(models.Customer.id == id).first()
 
 
-def get_customer_contacts_inner(id: uuid.UUID, db: Session):
-    return db.query(models.Customer).filter(models.Customer.id == id).first()
+def get_customer_contacts_inner(db: Session, id: uuid.UUID):
+    contacts = db.query(models.Customer).filter(models.Customer.id == id)
+    return contacts.filter(models.Customer.contacts).all()
 
 
 def update_customer_inner(db: Session, id: uuid.UUID, update: schema.Company):
@@ -44,5 +45,42 @@ def delete_customer(db: Session, id: uuid.UUID):
     customer = db.query(models.Customer).filter(models.Customer.id == id)
     customer.delete()
     db.commit()
+    return
 
 #######
+
+### Contacts ###
+
+
+def get_contact_by_id_inner(id: uuid.UUID, db: Session):
+    return db.query(models.Contacts).filter(models.Contacts.id == id).first()
+
+
+def check_contact_email(db: Session, email: str):
+    return db.query(models.Contacts).filter(models.Contacts.email).first()
+
+
+def create_contact_inner(db: Session, contact: schema.Contacts):
+    new_cont = models.Contacts(**contact.dict())
+    db.add(new_cont)
+    db.commit()
+    db.refresh(new_cont)
+    return new_cont
+
+
+def update_contact_inner(db: Session, id: uuid.UUID, update: schema.ContactsOut):
+    search = db.query(models.Contacts).filter(models.Contacts.id == id)
+    search.update(update.dict())
+    db.commit()
+    return search.first()
+
+
+def get_contacts_inner(db: Session, limit: int = 10, search: Optional[str] = "", skip: int = 0):
+    return db.query(models.Contacts).filter(models.Contacts.email.contains(search)).limit(limit).offset(skip).all()
+
+
+def delete_contact(db: Session, id: uuid.UUID):
+    customer = db.query(models.Contacts).filter(models.Contacts.id == id)
+    customer.delete()
+    db.commit()
+    return
