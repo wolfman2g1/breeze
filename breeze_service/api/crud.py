@@ -84,3 +84,20 @@ def delete_contact(db: Session, id: uuid.UUID):
     customer.delete()
     db.commit()
     return
+
+##### Techs ###
+
+
+def get_tech_by_email(db: Session, email: str):
+    return db.query(models.Techs).filter(models.Techs.email).first()
+
+
+def create_tech_inner(db: Session, tech: schema.Tech):
+    new_tech = models.Techs(**tech.dict())
+    db.add(new_tech)
+    db.commit()
+    return new_tech
+
+
+def get_all_techs_inner(db: Session, limit: int = 10, search: Optional[str] = "", skip: int = 0):
+    return db.query(models.Techs).filter(models.Techs.email.contains(search)).limit(limit).offset(skip).all()

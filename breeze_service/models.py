@@ -80,7 +80,7 @@ class Techs(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, nullable=False)
     fname = Column(String(50))
     lname = Column(String(50))
-    email = Column(String(50))
+    email = Column(String(50), unique=True)
     password = Column(String, nullable=False)
     admin = Column(Boolean, nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False,

@@ -59,3 +59,23 @@ class CompanyContactsOut(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class Tech(BaseModel):
+    class Config:
+        orm_mode = True
+    fname: str
+    lname: str
+    email: EmailStr
+    password: str
+    admin: bool
+
+
+class TechOut(BaseModel):
+    fname: str
+    lname: str
+    email: str
+    admin: bool
+
+    class Config:
+        orm_mode = True
