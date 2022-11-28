@@ -89,7 +89,7 @@ def delete_contact(db: Session, id: uuid.UUID):
 ##### Techs ###
 
 
-def get_tech_by_email(db: Session, email : str):
+def get_tech_by_email(db: Session, email: str):
     return db.query(models.Techs).filter(models.Techs.email == email).first()
 
 
@@ -110,7 +110,18 @@ def update_tech_by_id_inner(db: Session, id: uuid.UUID, update: schema.TechOut):
     db.commit()
     return search.first()
 
+
 def delete_tech_inner(db: Session, id: uuid.UUID):
     tech = db.query(models.Techs).filter(models.Techs.id == id)
     tech.delete()
     db.commit()
+
+
+def delete_tech_inner(db: Session, id: uuid.UUID):
+    tech = db.query(models.Techs).filter(models.Techs.id == id)
+    tech.delete()
+    db.commit()
+
+
+def get_tech_by_id_inner(id: uuid.UUID, db: Session):
+    return db.query(models.Techs).filter(models.Techs.id == id).first()

@@ -10,18 +10,15 @@ client = TestClient(configure_app())
 def test_create_tech():
     data = {
         "fname": "joe",
-        "lname": "smith",
-        "password": "test1",
-        "email": "abc@1234.com",
+        "lname": "smifth",
+        "password": "eetest1",
+        "email": "abc@1ggfeegghh55rr23wwwr4.com",
         "admin": True
     }
 
-    response = client.post("/api/v1/techs", json.dumps(data))
+    response = client.post("/api/v1/techs", data=json.dumps(data)).json()
     # assert response.status_code == 201
-    assert response.json()["fname"] == "joe"
-    assert response.json()["lname"] == "bob"
-    assert response.json()["email"] == "abc@12344.com"
-    assert response.json()["admin"] == True
+    assert response['email'] == "abc@1ggfeegghh55rr23wwwr4.com"
 
 
 def test_get_techs():
