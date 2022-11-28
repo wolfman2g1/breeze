@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from breeze_service.settings import config
 
 from breeze_service.settings import get_config
-SQLALCHEMY_DATABASE_URL = f"postgresql+asyncpg://{config.DB_USER}:{config.DB_PASS.get_secret_value()}@{config.DB_HOST}:{config.DB_PORT}/{config.DB_NAME}"
+SQLALCHEMY_DATABASE_URL = f"postgresql://{config.DB_USER}:{config.DB_PASS.get_secret_value()}@{config.DB_HOST}:{config.DB_PORT}/{config.DB_NAME}"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, future=True, echo=True

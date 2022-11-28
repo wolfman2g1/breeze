@@ -1,9 +1,13 @@
 import json
+import pytest
 from fastapi.testclient import TestClient
+from breeze_service.database import get_db
 
 from app import configure_app
 
 client = TestClient(configure_app())
+
+@pytest.fixture
 
 def test_create_customer():
     response = client.post("/api/v1/customer",

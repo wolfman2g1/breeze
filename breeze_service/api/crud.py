@@ -7,7 +7,8 @@ from breeze_service.api import schema
 
 ### Customer Crud ###
 def get_customers_inner(db: Session, limit: int = 10, search: Optional[str] = "", skip: int = 0):
-    return db.query(models.Customer).filter(models.Customer.customer_name.contains(search)).limit(limit).offset(skip).all()
+    return db.query(models.Customer).filter(models.Customer.customer_name.contains(search)).limit(limit).offset(
+        skip).all()
 
 
 def get_customer_by_id_inner(id: uuid.UUID, db: Session):
@@ -45,7 +46,7 @@ def delete_customer(db: Session, id: uuid.UUID):
     customer = db.query(models.Customer).filter(models.Customer.id == id)
     customer.delete()
     db.commit()
-    return
+
 
 #######
 
@@ -56,7 +57,7 @@ def get_contact_by_id_inner(id: uuid.UUID, db: Session):
     return db.query(models.Contacts).filter(models.Contacts.id == id).first()
 
 
-def check_contact_email(db: Session, email: str):
+def check_contact_email(db: Session):
     return db.query(models.Contacts).filter(models.Contacts.email).first()
 
 
@@ -83,13 +84,13 @@ def delete_contact(db: Session, id: uuid.UUID):
     customer = db.query(models.Contacts).filter(models.Contacts.id == id)
     customer.delete()
     db.commit()
-    return
+
 
 ##### Techs ###
 
 
-def get_tech_by_email(db: Session, email: str):
-    return db.query(models.Techs).filter(models.Techs.email).first()
+def get_tech_by_email(db: Session, email : str):
+    return db.query(models.Techs).filter(models.Techs.email == email).first()
 
 
 def create_tech_inner(db: Session, tech: schema.Tech):
@@ -101,3 +102,15 @@ def create_tech_inner(db: Session, tech: schema.Tech):
 
 def get_all_techs_inner(db: Session, limit: int = 10, search: Optional[str] = "", skip: int = 0):
     return db.query(models.Techs).filter(models.Techs.email.contains(search)).limit(limit).offset(skip).all()
+
+
+def update_tech_by_id_inner(db: Session, id: uuid.UUID, update: schema.TechOut):
+    search = db.query(models.Techs).filter(models.Techs.id == id)
+    search.update(**update.dict())
+    db.commit()
+    return search.first()
+
+def delete_tech_inner(db: Session, id: uuid.UUID):
+    tech = db.query(models.Techs).filter(models.Techs.id == id)
+    tech.delete()
+    db.commit()
