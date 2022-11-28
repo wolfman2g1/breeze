@@ -61,7 +61,7 @@ def create_company(customer: schema.Company, db: Session = Depends(get_db)):
 def update_customer_by_id(id: uuid.UUID, update: schema.Company, db: Session = Depends(get_db)):
     """ Update Customer by ID"""
     customer_query = crud.get_customer_by_id_inner(id=id, db=db)
-    if customer_query == None:
+    if customer_query is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Contact with id {id} not found")
     logger.info(f"Updated: {update.customer_name}")

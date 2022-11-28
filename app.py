@@ -2,10 +2,10 @@ from fastapi import FastAPI
 import uvicorn
 import logging
 import logging.config
-from  breeze_service.logging_config import LOGGING_CONFIG
+from breeze_service.logging_config import LOGGING_CONFIG
 from fastapi.middleware.cors import CORSMiddleware
-from  breeze_service.settings import config
-from breeze_service.api import ping, customer, contacts
+from breeze_service.settings import config
+from breeze_service.api import ping, customer, contacts, techs
 
 
 "Log setup"
@@ -26,6 +26,7 @@ def configure_app():
     app.include_router(ping.router)
     app.include_router(customer.router)
     app.include_router(contacts.router)
+    app.include_router(techs.router)
 
     return app
 
