@@ -3,6 +3,7 @@ from sqlalchemy import Column, Integer, String, TIMESTAMP, text, JSON, ForeignKe
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 import uuid
+
 Base = declarative_base()
 metadata = Base.metadata
 
@@ -17,7 +18,7 @@ class Customer(Base):
     created = Column(TIMESTAMP(timezone=True), nullable=False,
                      server_default=text("CURRENT_TIMESTAMP"))
     contacts = relationship('Contacts', back_populates="customer")
-    tickets = relationship('Tickets',  cascade="all, delete-orphan")
+    tickets = relationship('Tickets', cascade="all, delete-orphan")
 
     def __str__(self):
         return self.customer_name, self.id
@@ -36,7 +37,7 @@ class Contacts(Base):
     customer_id = Column(UUID(as_uuid=True), ForeignKey(
         "customers.id", ondelete="CASCADE"), nullable=False)
     customer = relationship("Customer", back_populates="contacts")
-    tickets = relationship("Tickets",  cascade="all, delete-orphan")
+    tickets = relationship("Tickets", cascade="all, delete-orphan")
 
     def __str__(self) -> str:
         return self.fname, self.lname, self.customer_id
@@ -44,7 +45,7 @@ class Contacts(Base):
 
 class Notes(Base):
     __tablename__ = "notes"
-    id = Column(UUID(as_uuid=True), primary_key=True, nullable=False)
+    id = Column(UUID(as_uuid=True), primary_key=True)
     public = Column(Boolean, nullable=True)
     note = Column(Text)
     entered_at = Column(TIMESTAMP(timezone=True), nullable=False,
@@ -57,7 +58,7 @@ class Notes(Base):
 
 class Tickets(Base):
     __tablename__ = "tickets"
-    id = Column(UUID(as_uuid=True), primary_key=True, nullable=False)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     ticket_id = Column(String(20), unique=True, nullable=False)
     title = Column(String(50), unique=True, nullable=False)
     desc = Column(Text)
@@ -69,7 +70,8 @@ class Tickets(Base):
     user_id = Column(UUID, ForeignKey("contacts.id", ondelete="CASCADE"))
     tech_id = Column(UUID, ForeignKey("techs.id", ondelete="CASCADE"))
     customer_id = Column(UUID, ForeignKey("customers.id", ondelete="CASCADE"))
-    notes = relationship("Notes",  cascade="all, delete-orphan")
+    notes = relationship("Notes")
+    techs = relationship("Techs")
 
     def __str__(self) -> str:
         return self.ticket_id
@@ -77,7 +79,7 @@ class Tickets(Base):
 
 class Techs(Base):
     __tablename__ = "techs"
-    id = Column(UUID(as_uuid=True), primary_key=True, nullable=False)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     fname = Column(String(50))
     lname = Column(String(50))
     email = Column(String(50), unique=True)
@@ -85,7 +87,7 @@ class Techs(Base):
     admin = Column(Boolean, nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False,
                         server_default=text("CURRENT_TIMESTAMP"))
-    tickets = relationship('Tickets',  cascade="all, delete-orphan")
+    tickets = relationship('Tickets', cascade="all, delete-orphan")
 
     def __str__(self) -> str:
         return self.fname, self.lname

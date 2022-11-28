@@ -22,6 +22,7 @@ def create_tech(tech: schema.Tech, db: Session = Depends(get_db)):
             f"Tech with email {tech.email}, already Exists")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail=f"Customer with name {tech.email}, already Exists")
+    return crud.create_tech_inner(db, tech=tech)
     logger.info(f"Created new tech {tech.fname}, {tech.lname} ")
 
 
